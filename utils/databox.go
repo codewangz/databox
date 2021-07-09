@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"reflect"
 	"strconv"
 	"strings"
@@ -115,7 +114,6 @@ func (dbx *dataBox) mergeData(dst interface{},src interface{},paths[]string,deep
 }
 
 func (dbx *dataBox) isSameKind(dst,src interface{}) (bool,reflect.Kind){
-	fmt.Println(dst,reflect.ValueOf(dst).Kind() ,src,reflect.ValueOf(src).Kind())
 	return reflect.ValueOf(dst).Kind() == reflect.ValueOf(src).Kind(),reflect.ValueOf(src).Kind()
 }
 
