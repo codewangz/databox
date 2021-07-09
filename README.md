@@ -11,25 +11,28 @@ import "github.com/codewangz/databox/utils"
 
 func main() {
   
-        var data interface{}
-	data = map[string]string{"b":"aa"}
-	//data = []interface{}{0,1}
-	//data := []interface{}{}
-	//data["a"] = 1
-	dbbox := NewDataBox(data)
-	//d := dbbox.createData([]string{"a","a"},"111")
-	//fmt.Println(d)
-	dbbox.Set("a","aaa")
-	dbbox.Set("b.1","111")
-	dbbox.Set("b.0","222")
-	dbbox.Set("b.1","222")
+        //map 增加新的值
+	a := map[string]interface{}{"0":"0","1":1,"2":"2","3":"3"}
+	dbx := utils.NewDataBox(a)
+	dbx.Set("a","2")
+	fmt.Println(dbx.Data())
+	//结果 map[0:0 1:1 2:2 3:3 a:2]
 
-	//dbbox.Set("c","aaa")
-	//dbbox.Set("b.1","ccc")
-	//dbbox.Set("b.1","222")
-	//dbbox.Set("b.0","222")
-	fmt.Println(dbbox.Data())
-	fmt.Println(dbbox.Get("d"))
+	//slice index 五号位置 设置为 5
+	b := []interface{}{1,2,3}
+	dbx = utils.NewDataBox(b)
+
+	dbx.Set("5","5")
+	fmt.Println(dbx.Data())
+	// 结果 [1 2 3 <nil> <nil> 5]
+
+	//空变量设置值
+	var c interface{}
+	dbx = utils.NewDataBox(c)
+	dbx.Set("a","a")
+	dbx.Set("b.0","b")
+	fmt.Println(dbx.Data())
+	// 结果 map[a:a b:[b]]
 }
 
 
