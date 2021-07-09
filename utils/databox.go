@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"encoding/json"
@@ -155,29 +155,6 @@ func Copy(data interface{}) interface{}{
 	return result
 }
 
-func main(){
-
-	var data interface{}
-	data = map[string]string{"b":"aa"}
-	//data = []interface{}{0,1}
-	//data := []interface{}{}
-	//{0,1,[nil,"a"]}
-	//data["a"] = 1
-	dbbox := NewDataBox(data)
-	//d := dbbox.createData([]string{"a","a"},"111")
-	//fmt.Println(d)
-	dbbox.Set("a","aaa")
-	dbbox.Set("b.1","111")
-	dbbox.Set("b.0","222")
-	dbbox.Set("b.1","222")
-
-	//dbbox.Set("c","aaa")
-	//dbbox.Set("b.1","ccc")
-	//dbbox.Set("b.1","222")
-	//dbbox.Set("b.0","222")
-	fmt.Println(dbbox.Data())
-	//fmt.Println(dbbox.Get("d"))
-}
 
 /*
 func (dbx *dataBox) GetSlice(key string) []interface{}{
