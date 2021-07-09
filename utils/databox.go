@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"encoding/json"
 	"fmt"
 	"reflect"
 	"strconv"
@@ -142,21 +141,6 @@ func (dbx *dataBox) Data() interface{}{
 	return dbx.data
 }
 
-func Copy(data interface{}) interface{}{
-	var result interface{}
-	jsonByte,err := json.Marshal(data)
-	if err != nil {
-		panic(err)
-	}
-	err = json.Unmarshal(jsonByte,&result)
-	if err != nil {
-		panic(err)
-	}
-	return result
-}
-
-
-/*
 func (dbx *dataBox) GetSlice(key string) []interface{}{
 	val := dbx.Get(key)
 	return ToSliceInterface(val)
@@ -186,5 +170,4 @@ func (dbx *dataBox) GetMapInterface(key string) map[string]interface{}{
 	return ToMapInterface(val)
 }
 
- */
 
