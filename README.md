@@ -11,7 +11,7 @@ import "github.com/codewangz/databox/utils"
 
 func main() {
   
-  var data interface{}
+        var data interface{}
 	data = map[string]string{"b":"aa"}
 	//data = []interface{}{0,1}
 	//data := []interface{}{}
