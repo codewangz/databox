@@ -164,7 +164,8 @@ func (dbx *dataBox) GetSliceString(key string) []string{
 }
 
 func (dbx *dataBox) GetSliceMap(key string){
-
+	val := dbx.Get(key)
+	return ToSliceMap(val)
 }
 
 func (dbx *dataBox) GetMapInterface(key string) map[string]interface{}{

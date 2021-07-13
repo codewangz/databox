@@ -321,4 +321,17 @@ func MD5(str string)string{
 	return hex.EncodeToString(md5.Sum(nil))
 }
 
+func ToSliceMap(val interface{}) (result []map[string]interface{}){
+	switch item := val.(type) {
+	case []interface{}:
+		for _,va := range item {
+			switch v := va.(type) {
+			case map[string]interface{}:
+				result = append(result,v)
+			}
+		}
+	}
+	return
+}
+
 
