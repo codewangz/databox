@@ -163,7 +163,7 @@ func (dbx *dataBox) GetSliceString(key string) []string{
 	return ToSliceString(val)
 }
 
-func (dbx *dataBox) GetSliceMap(key string){
+func (dbx *dataBox) GetSliceMap(key string) []map[string]interface{}{
 	val := dbx.Get(key)
 	return ToSliceMap(val)
 }
