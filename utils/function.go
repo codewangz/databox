@@ -334,4 +334,22 @@ func ToSliceMap(val interface{}) (result []map[string]interface{}){
 	return
 }
 
+func ToFloat64(val interface{} ) (result float64) {
+	switch item := val.(type) {
+	case string:
+		result,_ = strconv.ParseFloat(item, 64)
+	case int64:
+		return float64(item)
+	case int:
+		return float64(item)
+	case float64:
+		return item
+	case float32:
+		return float64(item)
+	case nil:
+		return 0
+	}
+	return 0
+}
+
 

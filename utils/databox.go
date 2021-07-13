@@ -173,4 +173,9 @@ func (dbx *dataBox) GetMapInterface(key string) map[string]interface{}{
 	return ToMapInterface(val)
 }
 
+func (dbx *dataBox) GetFloat64(key string) float64{
+	val := dbx.Get(key)
+	return ToFloat64(val)
+}
+
 
