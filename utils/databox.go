@@ -24,6 +24,9 @@ func (dbx *dataBox) Get(key string) interface{} {
 	var data interface{}
 	paths := strings.Split(key, ".")
 	data = dbx.data
+	if data == nil {
+		return nil
+	}
 	for _, path := range paths {
 		dataType := reflect.TypeOf(data).String()
 		i, err := strconv.Atoi(path)
