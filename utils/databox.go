@@ -11,7 +11,11 @@ type dataBox struct {
 	data interface{}
 }
 
-func NewDataBox(data interface{}) dataBox {
+func NewDataBox(args ...interface{}) dataBox {
+	var data interface{}
+	if len(args) > 0 {
+		data = args[0]
+	}
 	//复制一份，防止原数据被修改
 	return dataBox{Copy(data)}
 }
