@@ -6,7 +6,6 @@ import (
 	"strings"
 )
 
-
 type dataBox struct {
 	data interface{}
 }
@@ -24,10 +23,10 @@ func (dbx *dataBox) Get(key string) interface{} {
 	var data interface{}
 	paths := strings.Split(key, ".")
 	data = dbx.data
-	if reflect.ValueOf(data).Kind() == reflect.Invalid {
-		return nil
-	}
 	for _, path := range paths {
+		if reflect.ValueOf(data).Kind() == reflect.Invalid {
+			return nil
+		}
 		dataType := reflect.TypeOf(data).String()
 		i, err := strconv.Atoi(path)
 		if err == nil && dataType == "[]interface {}" { //list
@@ -48,37 +47,37 @@ func (dbx *dataBox) Get(key string) interface{} {
 	return data
 }
 
-func (dbx *dataBox) Set(key string,val interface{}) {
+func (dbx *dataBox) Set(key string, val interface{}) {
 	paths := strings.Split(key, ".")
-	dbx.retSet(paths,val)
+	dbx.retSet(paths, val)
 }
 
-func (dbx *dataBox) retSet(paths []string,val interface{}) {
-	data := dbx.createData(paths,val)
-	dbx.data = dbx.mergeData(dbx.data,data,paths,0)
+func (dbx *dataBox) retSet(paths []string, val interface{}) {
+	data := dbx.createData(paths, val)
+	dbx.data = dbx.mergeData(dbx.data, data, paths, 0)
 }
 
-func (dbx *dataBox) createData(paths []string,val interface{}) interface{}{
+func (dbx *dataBox) createData(paths []string, val interface{}) interface{} {
 
-		var tempData interface{}
-		if index, err := strconv.Atoi(paths[len(paths)-1]) ; err == nil {
-			tempData = []interface{}{}
-			for i:=0;i <= index; i++ {
-				tempData = append(tempData.([]interface{}),nil)
-			}
-			tempData.([]interface{})[index] = val
-		}else{
-			tempData = map[string]interface{}{paths[len(paths)-1]:val}
+	var tempData interface{}
+	if index, err := strconv.Atoi(paths[len(paths)-1]); err == nil {
+		tempData = []interface{}{}
+		for i := 0; i <= index; i++ {
+			tempData = append(tempData.([]interface{}), nil)
 		}
+		tempData.([]interface{})[index] = val
+	} else {
+		tempData = map[string]interface{}{paths[len(paths)-1]: val}
+	}
 
-		if len(paths) == 1 {
-			return tempData
-		}else{
-			return dbx.createData(paths[0:len(paths)-1],tempData)
-		}
+	if len(paths) == 1 {
+		return tempData
+	} else {
+		return dbx.createData(paths[0:len(paths)-1], tempData)
+	}
 }
 
-func (dbx *dataBox) mergeData(dst interface{},src interface{},paths[]string,deep int) interface{}{
+func (dbx *dataBox) mergeData(dst interface{}, src interface{}, paths []string, deep int) interface{} {
 	if dst == nil {
 		return src
 	}
@@ -87,31 +86,31 @@ func (dbx *dataBox) mergeData(dst interface{},src interface{},paths[]string,deep
 		return src
 	}
 
-	ok,kind := dbx.isSameKind(dst,src)
+	ok, kind := dbx.isSameKind(dst, src)
 	if !ok {
 		return src
 		//panic("结构类型不一致，不能设置")
 	}
 
 	if kind == reflect.Slice {
-		index,err := strconv.Atoi(paths[deep])
+		index, err := strconv.Atoi(paths[deep])
 		if err != nil {
 			panic(err)
 		}
 		srcSlice := Copy(src.([]interface{})[index])
-		if ok,dstSlice := dbx.isInPath(kind,dst,paths[deep:]); ok {
-			srcSlice = dbx.mergeData(dstSlice,srcSlice,paths,deep+1)
-		}else{
-			copy(src.([]interface{}),dst.([]interface{}))
+		if ok, dstSlice := dbx.isInPath(kind, dst, paths[deep:]); ok {
+			srcSlice = dbx.mergeData(dstSlice, srcSlice, paths, deep+1)
+		} else {
+			copy(src.([]interface{}), dst.([]interface{}))
 			dst = src
 		}
 
-		dst.([]interface{})[index]  = srcSlice
+		dst.([]interface{})[index] = srcSlice
 
-	}else if kind == reflect.Map {
+	} else if kind == reflect.Map {
 		srcval := Copy(src.(map[string]interface{})[paths[deep]])
-		if ok,dstMap := dbx.isInPath(kind,dst,paths[deep:]); ok {
-			srcval = dbx.mergeData(dstMap,srcval,paths,deep+1)
+		if ok, dstMap := dbx.isInPath(kind, dst, paths[deep:]); ok {
+			srcval = dbx.mergeData(dstMap, srcval, paths, deep+1)
 		}
 		dst.(map[string]interface{})[paths[0]] = srcval
 	}
@@ -120,65 +119,63 @@ func (dbx *dataBox) mergeData(dst interface{},src interface{},paths[]string,deep
 
 }
 
-func (dbx *dataBox) isSameKind(dst,src interface{}) (bool,reflect.Kind){
-	return reflect.ValueOf(dst).Kind() == reflect.ValueOf(src).Kind(),reflect.ValueOf(src).Kind()
+func (dbx *dataBox) isSameKind(dst, src interface{}) (bool, reflect.Kind) {
+	return reflect.ValueOf(dst).Kind() == reflect.ValueOf(src).Kind(), reflect.ValueOf(src).Kind()
 }
 
-func  (dbx *dataBox) isInPath( kind reflect.Kind,dst interface{},path []string) (bool,interface{}){
+func (dbx *dataBox) isInPath(kind reflect.Kind, dst interface{}, path []string) (bool, interface{}) {
 	if kind == reflect.Map {
-		if _,ok := dst.(map[string]interface{})[path[0]];ok {
-			return ok,Copy(dst.(map[string]interface{})[path[0]])
+		if _, ok := dst.(map[string]interface{})[path[0]]; ok {
+			return ok, Copy(dst.(map[string]interface{})[path[0]])
 		}
-	}else if kind == reflect.Slice {
-		if i, err := strconv.Atoi(path[0]);err == nil {
-			if len(dst.([]interface{})) >i {
-				return true,Copy(dst.([]interface{})[i])
+	} else if kind == reflect.Slice {
+		if i, err := strconv.Atoi(path[0]); err == nil {
+			if len(dst.([]interface{})) > i {
+				return true, Copy(dst.([]interface{})[i])
 			}
-			return false,nil
-		}else{
+			return false, nil
+		} else {
 			panic(err)
 		}
 	}
-	return false,nil
+	return false, nil
 }
 
-func (dbx *dataBox) Data() interface{}{
+func (dbx *dataBox) Data() interface{} {
 	return dbx.data
 }
 
-func (dbx *dataBox) GetSlice(key string) []interface{}{
+func (dbx *dataBox) GetSlice(key string) []interface{} {
 	val := dbx.Get(key)
 	return ToSliceInterface(val)
 }
 
-func (dbx *dataBox) GetInt64(key string) int64{
+func (dbx *dataBox) GetInt64(key string) int64 {
 	val := dbx.Get(key)
 	return ToInt64(val)
 }
 
-func (dbx *dataBox) GetString(key string) string{
+func (dbx *dataBox) GetString(key string) string {
 	val := dbx.Get(key)
 	return ItoString(val)
 }
 
-func (dbx *dataBox) GetSliceString(key string) []string{
+func (dbx *dataBox) GetSliceString(key string) []string {
 	val := dbx.Get(key)
 	return ToSliceString(val)
 }
 
-func (dbx *dataBox) GetSliceMap(key string) []map[string]interface{}{
+func (dbx *dataBox) GetSliceMap(key string) []map[string]interface{} {
 	val := dbx.Get(key)
 	return ToSliceMap(val)
 }
 
-func (dbx *dataBox) GetMapInterface(key string) map[string]interface{}{
+func (dbx *dataBox) GetMapInterface(key string) map[string]interface{} {
 	val := dbx.Get(key)
 	return ToMapInterface(val)
 }
 
-func (dbx *dataBox) GetFloat64(key string) float64{
+func (dbx *dataBox) GetFloat64(key string) float64 {
 	val := dbx.Get(key)
 	return ToFloat64(val)
 }
-
-
