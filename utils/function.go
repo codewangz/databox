@@ -50,33 +50,33 @@ func ItoString(val interface{}) string {
 	return str
 }
 
-func ToSliceString(val interface{}) []string{
+func ToSliceString(val interface{}) []string {
 	result := []string{}
 	switch x := val.(type) {
 	case []interface{}:
-		for _,v := range x {
-			result = append(result,ItoString(v))
+		for _, v := range x {
+			result = append(result, ItoString(v))
 		}
 	case []string:
-		for _,v := range x {
-			result = append(result,v)
+		for _, v := range x {
+			result = append(result, v)
 		}
 	}
 	return result
 }
 
-func ToSliceInt64(val interface{}) []int64{
+func ToSliceInt64(val interface{}) []int64 {
 	var result []int64
 	switch x := val.(type) {
 	case []interface{}:
-		for _,v := range x {
-			result = append(result,ToInt64(v))
+		for _, v := range x {
+			result = append(result, ToInt64(v))
 		}
 	}
 	return result
 }
 
-func ToMapInterface(val interface{}) map[string]interface{}{
+func ToMapInterface(val interface{}) map[string]interface{} {
 	switch val.(type) {
 	case map[string]interface{}:
 		return val.(map[string]interface{})
@@ -110,16 +110,15 @@ func CheckPhone(tel string) bool {
 	return rgx.MatchString(tel)
 }
 
-
-func SortMap(data map[string]interface{}) []interface{}{
+func SortMap(data map[string]interface{}) []interface{} {
 	var keys []string
-	for key,_ := range data{
-		keys = append(keys,key)
+	for key, _ := range data {
+		keys = append(keys, key)
 	}
 	sort.Strings(keys)
 	var sliceData []interface{}
-	for  _,key := range keys {
-		sliceData = append(sliceData,data[key])
+	for _, key := range keys {
+		sliceData = append(sliceData, data[key])
 	}
 	return sliceData
 }
@@ -133,13 +132,13 @@ func InSlice(items []string, item string) bool {
 	return false
 }
 
-func ToInt(val interface{}) int{
+func ToInt(val interface{}) int {
 	num := 0
 	switch val.(type) {
 	case float64:
 		num = int(val.(float64))
 	case string:
-		num,_ = strconv.Atoi(val.(string))
+		num, _ = strconv.Atoi(val.(string))
 	case int64:
 		num = int(val.(int64))
 	case int:
@@ -148,13 +147,13 @@ func ToInt(val interface{}) int{
 	return num
 }
 
-func ToInt64(val interface{}) int64{
+func ToInt64(val interface{}) int64 {
 	var num int64
 	switch val.(type) {
 	case float64:
 		num = int64(val.(float64))
 	case string:
-		num,_ = strconv.ParseInt(val.(string), 10, 64)
+		num, _ = strconv.ParseInt(val.(string), 10, 64)
 	case int64:
 		num = val.(int64)
 	case int:
@@ -163,10 +162,10 @@ func ToInt64(val interface{}) int64{
 	return num
 }
 
-func DeleteFromSlice(element interface{},slice interface{}){
+func DeleteFromSlice(element interface{}, slice interface{}) {
 	switch slice := (slice).(type) {
 	case *[]string:
-		for key,val := range *slice {
+		for key, val := range *slice {
 			if val == element {
 				*slice = append((*slice)[:key], (*slice)[key+1:]...)
 			}
@@ -174,14 +173,14 @@ func DeleteFromSlice(element interface{},slice interface{}){
 	}
 }
 
-func SliceInt64Sum(slice []int64) (result int64){
-	for _,val := range slice {
+func SliceInt64Sum(slice []int64) (result int64) {
+	for _, val := range slice {
 		result += val
 	}
 	return
 }
 
-func ToSliceInterface(val interface{}) (result []interface{}){
+func ToSliceInterface(val interface{}) (result []interface{}) {
 	switch val.(type) {
 	case []interface{}:
 		return val.([]interface{})
@@ -189,29 +188,29 @@ func ToSliceInterface(val interface{}) (result []interface{}){
 	return
 }
 
-func MapMerge(map1,map2 map[string]interface{}) (result map[string]interface{}){
+func MapMerge(map1, map2 map[string]interface{}) (result map[string]interface{}) {
 	result = Copy(map1).(map[string]interface{})
-	for key,val := range map2{
-		result[key]=val
+	for key, val := range map2 {
+		result[key] = val
 	}
 	return
 }
 
-func ToSnakes(data []map[string]interface{}) []map[string]interface{}{
+func ToSnakes(data []map[string]interface{}) []map[string]interface{} {
 	var result []map[string]interface{}
-	for _,val := range data {
+	for _, val := range data {
 		temp := map[string]interface{}{}
-		for key,value := range val{
+		for key, value := range val {
 			temp[snakeString(key)] = value
 		}
-		result = append(result,temp)
+		result = append(result, temp)
 	}
 	return result
 }
 
-func ToSnake(data map[string]interface{}) map[string]interface{}{
+func ToSnake(data map[string]interface{}) map[string]interface{} {
 	result := map[string]interface{}{}
-	for key,value := range data{
+	for key, value := range data {
 		result[snakeString(key)] = value
 	}
 	return result
@@ -245,7 +244,6 @@ func snakeString(s string) string {
 	return strings.ToLower(string(data[:]))
 }
 
-
 /**
  * 蛇形转驼峰
  * @description xx_yy to XxYx  xx_y_y to XxYY
@@ -277,11 +275,11 @@ func camelString(s string) string {
 	return string(data[:])
 }
 
-func JsonDecode(jsonStr string) (result interface{}){
+func JsonDecode(jsonStr string) (result interface{}) {
 	if jsonStr == "" {
 		return
 	}
-	if err := json.Unmarshal([]byte(jsonStr),&result);err != nil {
+	if err := json.Unmarshal([]byte(jsonStr), &result); err != nil {
 		panic(err)
 	}
 	return
@@ -291,53 +289,54 @@ func JsonEncode(obj interface{}) string {
 	if obj == nil {
 		return ""
 	}
-	result,err := json.Marshal(obj)
+	result, err := json.Marshal(obj)
 	if err != nil {
 		panic(err)
 	}
 	return string(result)
 }
 
-func Now() string{
+func Now() string {
 	return time.Now().Format("2006-01-02 15:04:05")
 }
 
-func Copy(data interface{}) interface{}{
+func Copy(data interface{}) interface{} {
 	var result interface{}
-	jsonByte,err := json.Marshal(data)
+	jsonByte, err := json.Marshal(data)
 	if err != nil {
 		panic(err)
 	}
-	err = json.Unmarshal(jsonByte,&result)
+	err = json.Unmarshal(jsonByte, &result)
 	if err != nil {
 		panic(err)
 	}
 	return result
 }
 
-func MD5(str string)string{
+func MD5(str string) string {
 	md5 := md5.New()
 	md5.Write([]byte(str))
 	return hex.EncodeToString(md5.Sum(nil))
 }
 
-func ToSliceMap(val interface{}) (result []map[string]interface{}){
+func ToSliceMap(val interface{}) (result []map[string]interface{}) {
 	switch item := val.(type) {
 	case []interface{}:
-		for _,va := range item {
+		for _, va := range item {
 			switch v := va.(type) {
 			case map[string]interface{}:
-				result = append(result,v)
+				result = append(result, v)
 			}
 		}
 	}
 	return
 }
 
-func ToFloat64(val interface{} ) (result float64) {
+func ToFloat64(val interface{}) (result float64) {
 	switch item := val.(type) {
 	case string:
-		result,_ = strconv.ParseFloat(item, 64)
+		result, _ = strconv.ParseFloat(item, 64)
+		return
 	case int64:
 		return float64(item)
 	case int:
@@ -351,5 +350,3 @@ func ToFloat64(val interface{} ) (result float64) {
 	}
 	return 0
 }
-
-
