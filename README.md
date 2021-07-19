@@ -8,14 +8,16 @@ databox 是为了解决 处理复杂 golang 结构编写的代码
 
 package main
 
+
 import "github.com/codewangz/databox/utils"
 
 func main() {
+        
        	data := map[string]interface{}{"b":"aa","a":[]interface{}{"1"}}
 	dbbox := NewDataBox(data)
 	fmt.Println(dbbox.Get("a.0")) //获取map里面下标给a的切片第一个元素
 	// print 1
-  
+
         //map 增加新的值
 	a := map[string]interface{}{"0":"0","1":1,"2":"2","3":"3"}
 	dbx := utils.NewDataBox(a)
