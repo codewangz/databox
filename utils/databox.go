@@ -145,37 +145,58 @@ func (dbx *dataBox) Data() interface{} {
 	return dbx.data
 }
 
-func (dbx *dataBox) GetSlice(key string) []interface{} {
+func (dbx *dataBox) GetSlice(key string, defVal ...[]interface{}) []interface{} {
 	val := dbx.Get(key)
+	if val == nil && len(defVal) > 0 {
+		return defVal[0]
+	}
 	return ToSliceInterface(val)
 }
 
-func (dbx *dataBox) GetInt64(key string) int64 {
+func (dbx *dataBox) GetInt64(key string, defVal ...int64) int64 {
 	val := dbx.Get(key)
+	if val == nil && len(defVal) > 0 {
+		return defVal[0]
+	}
 	return ToInt64(val)
 }
 
-func (dbx *dataBox) GetString(key string) string {
+func (dbx *dataBox) GetString(key string, defVal ...string) string {
 	val := dbx.Get(key)
+	if val == nil && len(defVal) > 0 {
+		return defVal[0]
+	}
 	return ItoString(val)
 }
 
-func (dbx *dataBox) GetSliceString(key string) []string {
+func (dbx *dataBox) GetSliceString(key string, defVal ...[]string) []string {
 	val := dbx.Get(key)
+	if val == nil && len(defVal) > 0 {
+		return defVal[0]
+	}
 	return ToSliceString(val)
 }
 
-func (dbx *dataBox) GetSliceMap(key string) []map[string]interface{} {
+func (dbx *dataBox) GetSliceMap(key string, defVal ...[]map[string]interface{}) []map[string]interface{} {
 	val := dbx.Get(key)
+	if val == nil && len(defVal) > 0 {
+		return defVal[0]
+	}
 	return ToSliceMap(val)
 }
 
-func (dbx *dataBox) GetMapInterface(key string) map[string]interface{} {
+func (dbx *dataBox) GetMapInterface(key string, defVal ...map[string]interface{}) map[string]interface{} {
 	val := dbx.Get(key)
+	if val == nil && len(defVal) > 0 {
+		return defVal[0]
+	}
 	return ToMapInterface(val)
 }
 
-func (dbx *dataBox) GetFloat64(key string) float64 {
+func (dbx *dataBox) GetFloat64(key string, defVal ...float64) float64 {
 	val := dbx.Get(key)
+	if val == nil && len(defVal) > 0 {
+		return defVal[0]
+	}
 	return ToFloat64(val)
 }
